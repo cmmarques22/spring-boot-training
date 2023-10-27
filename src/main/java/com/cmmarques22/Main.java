@@ -19,8 +19,11 @@ public class Main {
         //System.out.println("Hello Springboot");
     }
         @GetMapping("/greet")
-        public String greet() {
-        return "Hello Spring";
+        public GreetResponse greet() {
+            return new GreetResponse("Hello Spring");
+        }
 
-    }
+        record GreetResponse(String greet){};
+
+
 }
