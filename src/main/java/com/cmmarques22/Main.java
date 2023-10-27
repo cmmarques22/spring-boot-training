@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Objects;
 
 @ComponentScan(basePackages = "com.cmmarques22")
@@ -22,41 +23,59 @@ public class Main {
     }
         @GetMapping("/greet")
         public GreetResponse greet() {
-            return new GreetResponse("Hello Spring");
+            GreetResponse response =  new GreetResponse(
+                    "Hello Spring",
+
+                    List.of("Golang", "Java", "Python"),
+
+                    new Person("Camané")
+                    );
+            return response;
         }
 
-        //record GreetResponse(String greet){};
-         class GreetResponse {
-        private final String greet;
+        record Person(String name) {}
 
-        public GreetResponse(String greet){
-            this.greet = greet;
-        }
+        record GreetResponse(
+                String greet,
+                List<String> favProgrammingLanguages,
+                Person person
+        ){
 
-            public String getGreet() {
-                return greet;
-            }
+        };
 
-            @Override
-            public String toString() {
-                return "GreetResponse{" +
-                        "greet='" + '\'' +
-                        '}';
-            }
 
-            @Override
-            public boolean equals(Object o) {
-                if (this == o) return true;
-                if (o == null || getClass() != o.getClass()) return false;
-                GreetResponse that = (GreetResponse) o;
-                return Objects.equals(greet, that.greet);
-            }
 
-            @Override
-            public int hashCode() {
-                return Objects.hash(greet);
-            }
-        }
+//        static class GreetResponse {
+//        private final String greet;
+//
+//        public GreetResponse(String greet){
+//            this.greet = greet;
+//        }
+//
+//            public String getGreet() {
+//                return greet;
+//            }
+//
+//            @Override
+//            public String toString() {
+//                return "GreetResponse{" +
+//                        "greet='" + '\'' +
+//                        '}';
+//            }
+//
+//            @Override
+//            public boolean equals(Object o) {
+//                if (this == o) return true;
+//                if (o == null || getClass() != o.getClass()) return false;
+//                GreetResponse that = (GreetResponse) o;
+//                return Objects.equals(greet, that.greet);
+//            }
+//
+//            @Override
+//            public int hashCode() {
+//                return Objects.hash(greet);
+//            }
+//        }
 
 
 }
