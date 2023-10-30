@@ -2,14 +2,12 @@ package com.cmmarques22;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Objects;
 
 @ComponentScan(basePackages = "com.cmmarques22")
 @EnableAutoConfiguration
@@ -23,17 +21,16 @@ public class Main {
     }
         @GetMapping("/greet")
         public GreetResponse greet() {
-            GreetResponse response =  new GreetResponse(
+            return new GreetResponse(
                     "Hello Spring",
 
-                    List.of("Golang", "Java", "Python"),
+                    List.of("Golang(loading)", "Java", "Python"),
 
-                    new Person("Camané")
+                    new Person("Camané", 32, 1.87)
                     );
-            return response;
         }
 
-        record Person(String name) {}
+        record Person(String name, int age, double height) {}
 
         record GreetResponse(
                 String greet,
@@ -41,7 +38,7 @@ public class Main {
                 Person person
         ){
 
-        };
+        }
 
 
 
