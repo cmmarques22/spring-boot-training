@@ -18,7 +18,7 @@ public class Movie {
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "customer_id_sequence"
+            generator = "movie_id_sequence"
     )
     private Integer id;
 
