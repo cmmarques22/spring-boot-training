@@ -1,14 +1,27 @@
 package com.cmmarques22;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
 public class Movie {
 
     private String title;
     private Double rating;
     private String genre;
 
+    @Id
+    @SequenceGenerator(
+            name = "movie_id_sequence",
+            sequenceName = "movie_id_sequence"
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "customer_id_sequence"
+    )
     private Integer id;
+
 
     public Movie (Integer id, String title, String genre, Double rating) {
         this.id = id;
