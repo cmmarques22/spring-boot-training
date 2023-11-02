@@ -14,7 +14,9 @@ public class Movie {
     @Id
     @SequenceGenerator(
             name = "movie_id_sequence",
-            sequenceName = "movie_id_sequence"
+            sequenceName = "movie_id_sequence",
+            // default is 50 so ids will have an increment size of 1 to 51
+            allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
