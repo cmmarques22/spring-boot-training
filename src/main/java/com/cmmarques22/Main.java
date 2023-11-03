@@ -1,10 +1,12 @@
 package com.cmmarques22;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 //@ComponentScan(basePackages = "com.cmmarques22")
 //@EnableAutoConfiguration
@@ -37,12 +39,6 @@ public class Main {
             String genre
     ) {
     }
-    record MovieRequestById(
-            String title,
-            Double rating,
-            String genre
-    ) {
-    }
 
 
     //get the request, convert it to movie and save it
@@ -65,54 +61,72 @@ public class Main {
             @PathVariable("movieId") Integer id) {
 
         //check if id exist before deleting?
-        movieRepository.deleteById(id );
+        movieRepository.deleteById(id);
     }
 
 
     //edit customer challenge
 
-    @RequestMapping(method = RequestMethod.PUT, path = "{movieId}")
-    public void updateMovie(
-            @PathVariable("movieId") Integer id,
-            NewMovieRequest request,
-            @RequestParam (required = false) String title,
-            @RequestParam (required = false) Integer rating,
-            @RequestParam (required = false) String genre
-            ) {
-        movieRepository.findById(id);
+//    @RequestMapping(method = RequestMethod.PUT, path = "{movieId}")
+//    public void updateMovie(
+//            @PathVariable("movieId") Integer id,
+//            @RequestParam (required = false) String title,
+//            @RequestParam (required = false) Integer rating,
+//            @RequestParam (required = false) String genre
+//            ) {
+//        movieRepository.findById(id);
+//
+//        Movie movie = new Movie();
+//        movie.setTitle(request.title());
+//        movie.setRating(request.rating());
+//        movie.setGenre(request.genre());
+//        movieRepository.save(movie);
+//
+//    }
 
-        Movie movie = new Movie();
-        movie.setTitle(request.title());
-        movie.setRating(request.rating());
-        movie.setGenre(request.genre());
-        movieRepository.save(movie);
+//     @PutMapping("{movieId}")
+//        public void updateCustomer(@PathVariable("movieId") Integer id,
+//                                   @RequestBody Movie request) {
+//        Movie movie = new Movie();
+//        movie.setId(id);
+//        movie.setTitle(request.title());
+//        movie.setRating(request.rating());
+//        movie.setGenre(request.genre());
+//            movieRepository.save(movie);
+//        }
 
+
+//    @PutMapping("{movieId}")
+//    public void updateMovie(@PathVariable("movieId") Integer id, @RequestBody Movie request) {
+//        Movie existingMovie = movieRepository.findById(id).orElse(null);
+//
+//        if (existingMovie != null) {
+//            existingMovie.setTitle(request.getTitle());
+//            existingMovie.setRating(request.getRating());
+//            existingMovie.setGenre(request.getGenre());
+//
+//            movieRepository.save(existingMovie);
+//        }
+//    }
+
+    @PutMapping("{movieId}")
+    public void updateMovie(@PathVariable("movieId") Integer id, @RequestBody Movie request) {
+        Movie existingMovie = movieRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Movie with id " + id + " not found"));
+
+        existingMovie.setTitle(request.getTitle());
+        existingMovie.setRating(request.getRating());
+        existingMovie.setGenre(request.getGenre());
+
+        movieRepository.save(existingMovie);
     }
 
 
 
 
 
-//    @GetMapping("/greet")
-//    public GreetResponse greet() {
-//        return new GreetResponse(
-//                "Hello Spring",
-//
-//                List.of("Golang(loading)", "Java", "Python"),
-//
-//                new Person("Camané", 32, 1.87)
-//        );
-//    }
-//
-//    record Person(String name, int age, double height) {}
-//
-//    record GreetResponse(
-//            String greet,
-//            List<String> favProgrammingLanguages,
-//            Person person
-//    ){
-//
-//    }
+
+
     // docker exec -it postgres bash
     // psql -U username
     // \l to list
@@ -126,37 +140,7 @@ public class Main {
 
 
 
-//        static class GreetResponse {
-//        private final String greet;
-//
-//        public GreetResponse(String greet){
-//            this.greet = greet;
-//        }
-//
-//            public String getGreet() {
-//                return greet;
-//            }
-//
-//            @Override
-//            public String toString() {
-//                return "GreetResponse{" +
-//                        "greet='" + '\'' +
-//                        '}';
-//            }
-//
-//            @Override
-//            public boolean equals(Object o) {
-//                if (this == o) return true;
-//                if (o == null || getClass() != o.getClass()) return false;
-//                GreetResponse that = (GreetResponse) o;
-//                return Objects.equals(greet, that.greet);
-//            }
-//
-//            @Override
-//            public int hashCode() {
-//                return Objects.hash(greet);
-//            }
-//        }
+
 
 
 }
