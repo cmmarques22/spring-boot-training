@@ -37,10 +37,16 @@ public class Main {
             String genre
     ) {
     }
+    record MovieRequestById(
+            String title,
+            Double rating,
+            String genre
+    ) {
+    }
 
 
     //get the request, convert it to movie and save it
-//JSON object mapped to new movie request
+    //JSON object mapped to new movie request
     @PostMapping
     public void addMovie(
             @RequestBody NewMovieRequest request
@@ -53,14 +59,35 @@ public class Main {
         movie.setGenre(request.genre());
         movieRepository.save(movie);
     }
-
-    @DeleteMapping("{movieId}")
-    public void deleteMovie(@PathVariable("movieId") Integer id) {
+    //delete customer
+    @RequestMapping (method = RequestMethod.DELETE, path = "{movieId}")
+    public void deleteMovie(
+            @PathVariable("movieId") Integer id) {
 
         //check if id exist before deleting?
         movieRepository.deleteById(id );
     }
 
+
+    //edit customer challenge
+
+    @RequestMapping(method = RequestMethod.PUT, path = "{movieId}")
+    public void updateMovie(
+            @PathVariable("movieId") Integer id,
+            NewMovieRequest request,
+            @RequestParam (required = false) String title,
+            @RequestParam (required = false) Integer rating,
+            @RequestParam (required = false) String genre
+            ) {
+        movieRepository.findById(id);
+
+        Movie movie = new Movie();
+        movie.setTitle(request.title());
+        movie.setRating(request.rating());
+        movie.setGenre(request.genre());
+        movieRepository.save(movie);
+
+    }
 
 
 
@@ -89,7 +116,7 @@ public class Main {
     // docker exec -it postgres bash
     // psql -U username
     // \l to list
-    // \d movie (database customer) or \dt database table
+    // \c \\d movie (database customer) or \dt database table
     // CREATE DATABASE movie, ctrl d to exit x2
 
 
